@@ -496,7 +496,7 @@ class RPC:
         else:
             return None
 
-    def _rpc_performance(self) -> List[Dict[str, Any]]:
+    def _rpc_performance(self, stake_currency: str, fiat_display_currency: str) -> List[Dict[str, Any]]:
         """
         Handler for performance.
         Shows a performance statistic from finished trades
@@ -504,6 +504,11 @@ class RPC:
         pair_rates = Trade.get_overall_performance()
         # Round and convert to %
         [x.update({'profit': round(x['profit'] * 100, 2)}) for x in pair_rates]
+        [x.update({'amount': '{value:.8f} {symbol}'.format(
+                    value=float(x['amount']),
+                    symbol=stake_currency
+                )}) for x in pair_rates]
+
         return pair_rates
 
     def _rpc_count(self) -> Dict[str, float]:

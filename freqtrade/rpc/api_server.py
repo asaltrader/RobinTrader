@@ -329,7 +329,8 @@ class ApiServer(RPC):
         """
         logger.info("LocalRPC - performance Command Called")
 
-        stats = self._rpc_performance()
+        stats = self._rpc_performance(self._config['stake_currency'],
+                                      self._config.get('fiat_display_currency', ''))
 
         return self.rest_dump(stats)
 

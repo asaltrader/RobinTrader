@@ -466,7 +466,8 @@ class Telegram(RPC):
         :return: None
         """
         try:
-            trades = self._rpc_performance()
+            trades = self._rpc_performance(self._config['stake_currency'],
+                                      self._config.get('fiat_display_currency', ''))
             stats = '\n'.join('{index}.\t<code>{pair}\t{profit:.2f}% ({count})</code>'.format(
                 index=i + 1,
                 pair=trade['pair'],

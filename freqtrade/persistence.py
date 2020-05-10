@@ -476,6 +476,7 @@ class Trade(_DECL_BASE):
         pair_rates = Trade.session.query(
             Trade.pair,
             func.sum(Trade.close_profit).label('profit_sum'),
+            func.sum(Trade.close_profit_abs).label('amount'),
             func.count(Trade.pair).label('count')
         ).filter(Trade.is_open.is_(False))\
             .group_by(Trade.pair) \
@@ -485,9 +486,10 @@ class Trade(_DECL_BASE):
             {
                 'pair': pair,
                 'profit': rate,
+                'amount': amount,
                 'count': count
             }
-            for pair, rate, count in pair_rates
+            for pair, rate, amount, count in pair_rates
         ]
 
     @staticmethod
